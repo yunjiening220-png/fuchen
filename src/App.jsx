@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, X, Edit2, Trash2, Plus } from 'lucide-react'
 
 export default function ToonMyPhotoWebsite() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -25,7 +24,6 @@ export default function ToonMyPhotoWebsite() {
   })
   const [contactEditOpen, setContactEditOpen] = useState(false)
 
-  // 从本地存储加载数据
   useEffect(() => {
     const savedProducts = localStorage.getItem('portfolio_products')
     const savedContact = localStorage.getItem('contact_info')
@@ -38,19 +36,16 @@ export default function ToonMyPhotoWebsite() {
     }
   }, [])
 
-  // 保存产品到本地存储
   const saveProducts = (newProducts) => {
     setProducts(newProducts)
     localStorage.setItem('portfolio_products', JSON.stringify(newProducts))
   }
 
-  // 保存联系信息
   const saveContactInfo = () => {
     localStorage.setItem('contact_info', JSON.stringify(contactInfo))
     setContactEditOpen(false)
   }
 
-  // 添加产品
   const handleAddProduct = () => {
     if (!formData.name || !formData.price || !formData.delivery) {
       alert('请填写所有必填项')
@@ -82,7 +77,6 @@ export default function ToonMyPhotoWebsite() {
     alert('✅ ' + (editingId ? '产品已更新' : '产品已添加'))
   }
 
-  // 删除产品
   const handleDeleteProduct = (category, id) => {
     if (!confirm('确定要删除这个作品吗？')) return
 
@@ -91,7 +85,6 @@ export default function ToonMyPhotoWebsite() {
     saveProducts(newProducts)
   }
 
-  // 编辑产品
   const handleEditProduct = (category, product) => {
     setFormData({
       category,
@@ -105,7 +98,6 @@ export default function ToonMyPhotoWebsite() {
     setCurrentPage('manage')
   }
 
-  // 重置表单
   const resetForm = () => {
     setFormData({
       category: 'anime',
@@ -118,14 +110,12 @@ export default function ToonMyPhotoWebsite() {
     setEditingId(null)
   }
 
-  // 联系下单
   const handleOrderClick = (productName, price) => {
     const subject = `询问作品: ${productName}`
     const body = `您好，我对"${productName}"($${price})感兴趣，请告诉我更多信息。`
     window.location.href = `mailto:${contactInfo.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
   }
 
-  // 产品卡片组件
   const ProductCard = ({ product, category }) => (
     <div className="group rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 hover:border-purple-500/50 transition">
       <div className="relative">
@@ -161,15 +151,15 @@ export default function ToonMyPhotoWebsite() {
           <div className="flex gap-2">
             <button
               onClick={() => handleEditProduct(category, product)}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 rounded-lg py-1 text-sm flex items-center justify-center gap-1 transition"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 rounded-lg py-1 text-sm transition"
             >
-              <Edit2 size={14} /> 编辑
+              ✎ 编辑
             </button>
             <button
               onClick={() => handleDeleteProduct(category, product.id)}
-              className="flex-1 bg-red-600 hover:bg-red-700 rounded-lg py-1 text-sm flex items-center justify-center gap-1 transition"
+              className="flex-1 bg-red-600 hover:bg-red-700 rounded-lg py-1 text-sm transition"
             >
-              <Trash2 size={14} /> 删除
+              🗑 删除
             </button>
           </div>
         )}
@@ -177,7 +167,6 @@ export default function ToonMyPhotoWebsite() {
     </div>
   )
 
-  // 分类页面
   const CategorySection = ({ title, emoji, category, description }) => {
     const categoryProducts = products[category]
 
@@ -218,7 +207,6 @@ export default function ToonMyPhotoWebsite() {
             FuChen Studio
           </h1>
 
-          {/* 桌面菜单 */}
           <div className="hidden md:flex gap-6">
             {[
               { label: '首页', key: 'home' },
@@ -241,16 +229,14 @@ export default function ToonMyPhotoWebsite() {
             ))}
           </div>
 
-          {/* 移动菜单按钮 */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden"
+            className="md:hidden text-2xl"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? '✕' : '☰'}
           </button>
         </div>
 
-        {/* 移动菜单 */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-white/10 bg-zinc-900">
             {[
@@ -278,7 +264,6 @@ export default function ToonMyPhotoWebsite() {
       {/* 首页 */}
       {currentPage === 'home' && (
         <>
-          {/* Hero */}
           <section className="relative overflow-hidden border-b border-white/10">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-700/20 via-pink-600/10 to-cyan-500/10 blur-3xl" />
 
@@ -313,7 +298,6 @@ export default function ToonMyPhotoWebsite() {
             </div>
           </section>
 
-          {/* About */}
           <section className="max-w-6xl mx-auto px-6 py-20">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
@@ -338,7 +322,6 @@ export default function ToonMyPhotoWebsite() {
             </div>
           </section>
 
-          {/* Services */}
           <section className="max-w-7xl mx-auto px-6 py-20 border-t border-white/10">
             <h2 className="text-4xl font-bold mb-12">服务</h2>
 
@@ -368,7 +351,6 @@ export default function ToonMyPhotoWebsite() {
             </div>
           </section>
 
-          {/* Contact */}
           <section className="max-w-4xl mx-auto px-6 py-24 text-center border-t border-white/10">
             <h2 className="text-4xl font-bold">联系我</h2>
 
@@ -390,7 +372,6 @@ export default function ToonMyPhotoWebsite() {
         </>
       )}
 
-      {/* 动漫分类 */}
       {currentPage === 'anime' && (
         <CategorySection
           title="动漫主题"
@@ -400,7 +381,6 @@ export default function ToonMyPhotoWebsite() {
         />
       )}
 
-      {/* 海报分类 */}
       {currentPage === 'poster' && (
         <CategorySection
           title="海报宣传"
@@ -410,7 +390,6 @@ export default function ToonMyPhotoWebsite() {
         />
       )}
 
-      {/* 壁纸分类 */}
       {currentPage === 'wallpaper' && (
         <CategorySection
           title="壁纸设计"
@@ -420,12 +399,10 @@ export default function ToonMyPhotoWebsite() {
         />
       )}
 
-      {/* 管理页面 */}
       {currentPage === 'manage' && (
         <section className="max-w-7xl mx-auto px-6 py-20">
           <h2 className="text-4xl font-bold mb-8">📝 管理作品</h2>
 
-          {/* 联系信息编辑 */}
           <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 mb-8">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-2xl font-semibold">联系信息</h3>
@@ -476,7 +453,6 @@ export default function ToonMyPhotoWebsite() {
             )}
           </div>
 
-          {/* 添加产品表单 */}
           <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 mb-8">
             <h3 className="text-2xl font-semibold mb-6">
               {editingId ? '编辑作品' : '添加新作品'}
@@ -560,10 +536,9 @@ export default function ToonMyPhotoWebsite() {
               <div className="flex gap-3 pt-4">
                 <button
                   onClick={handleAddProduct}
-                  className="flex-1 bg-purple-600 hover:bg-purple-700 rounded-lg py-2 font-semibold transition flex items-center justify-center gap-2"
+                  className="flex-1 bg-purple-600 hover:bg-purple-700 rounded-lg py-2 font-semibold transition"
                 >
-                  <Plus size={18} />
-                  {editingId ? '更新作品' : '添加作品'}
+                  {editingId ? '更新作品' : '+ 添加作品'}
                 </button>
                 {editingId && (
                   <button
@@ -577,7 +552,6 @@ export default function ToonMyPhotoWebsite() {
             </div>
           </div>
 
-          {/* 产品列表 */}
           <h3 className="text-2xl font-semibold mb-6">已添加的作品</h3>
 
           {Object.entries(products).map(([category, categoryProducts]) => (
@@ -612,7 +586,6 @@ export default function ToonMyPhotoWebsite() {
         </section>
       )}
 
-      {/* Footer */}
       <footer className="border-t border-white/10 py-8 text-center text-zinc-500 text-sm">
         © 2026 FuChen Studio — All Rights Reserved.
       </footer>
